@@ -1,0 +1,11 @@
+Epoch: 0 | Training Loss: 2392344.4976 | Validation Loss: 2.0476 | Test Loss: 2.0473
+Epoch: 1 | Training Loss: 0.7560 | Validation Loss: 0.3026 | Test Loss: 0.3014
+Epoch: 2 | Training Loss: 0.2881 | Validation Loss: 0.2552 | Test Loss: 0.2531
+Epoch: 3 | Training Loss: 0.2415 | Validation Loss: 0.2377 | Test Loss: 0.2363
+Epoch: 4 | Training Loss: 0.2312 | Validation Loss: 0.2305 | Test Loss: 0.2295
+Epoch: 5 | Training Loss: 0.4517 | Validation Loss: 0.3435 | Test Loss: 0.3329
+Epoch: 6 | Training Loss: 0.2469 | Validation Loss: 0.3084 | Test Loss: 0.2988
+Epoch: 7 | Training Loss: 0.2324 | Validation Loss: 0.2990 | Test Loss: 0.2897
+Epoch: 8 | Training Loss: 0.2277 | Validation Loss: 0.2963 | Test Loss: 0.2871
+Epoch: 9 | Training Loss: 0.2594 | Validation Loss: 0.2899 | Test Loss: 0.2839
+Early stop at epoch 9. Best model from epoch 4

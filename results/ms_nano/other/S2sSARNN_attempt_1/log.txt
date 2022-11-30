@@ -1,0 +1,4 @@
+Epoch: 0 | Training Loss: 2392344.4976 | Validation Loss: 2.0534 | Test Loss: 2.0534
+Epoch: 1 | Training Loss: 1.3389 | Validation Loss: 1.2822 | Test Loss: 1.2817
+Epoch: 2 | Training Loss: 0.6900 | Validation Loss: 0.6805 | Test Loss: 0.6706
+Epoch: 3 | Training Loss: 0.5582 | Validation Loss: 0.5720 | Test Loss: 0.5661

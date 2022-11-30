@@ -1,0 +1,7 @@
+{
+    "avg_error_rate": 0.13622699945345232,
+    "perfect_strand": 277,
+    "ref_avg_error_rate": 0.11808161778101653,
+    "ref_perfect_strand": 332,
+    "avg_pos_error_rate_dif": 0.018691929313171797
+}

@@ -1,0 +1,15 @@
+Epoch: 0 | Training Loss: 2392344.4976 | Validation Loss: 2.0512 | Test Loss: 2.0513
+Epoch: 1 | Training Loss: 0.6537 | Validation Loss: 0.2816 | Test Loss: 0.2813
+Epoch: 2 | Training Loss: 0.2470 | Validation Loss: 2.0021 | Test Loss: 2.0132
+Epoch: 3 | Training Loss: 0.6135 | Validation Loss: 0.4148 | Test Loss: 0.4152
+Epoch: 4 | Training Loss: 0.2899 | Validation Loss: 0.7479 | Test Loss: 0.7497
+Epoch: 5 | Training Loss: 0.2745 | Validation Loss: 0.2442 | Test Loss: 0.2437
+Epoch: 6 | Training Loss: 0.2375 | Validation Loss: 0.2336 | Test Loss: 0.2334
+Epoch: 7 | Training Loss: 0.2307 | Validation Loss: 0.2318 | Test Loss: 0.2314
+Epoch: 8 | Training Loss: 0.2273 | Validation Loss: 0.2264 | Test Loss: 0.2262
+Epoch: 9 | Training Loss: 0.2903 | Validation Loss: 0.2779 | Test Loss: 0.2777
+Epoch: 10 | Training Loss: 0.2520 | Validation Loss: 0.2384 | Test Loss: 0.2383
+Epoch: 11 | Training Loss: 0.2325 | Validation Loss: 0.2305 | Test Loss: 0.2302
+Epoch: 12 | Training Loss: 0.4454 | Validation Loss: 0.2812 | Test Loss: 0.2812
+Epoch: 13 | Training Loss: 0.2479 | Validation Loss: 0.2358 | Test Loss: 0.2357
+Early stop at epoch 13. Best model from epoch 8

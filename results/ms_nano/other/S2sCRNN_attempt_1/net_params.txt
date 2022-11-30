@@ -1,0 +1,31 @@
+S2sCRNN(
+  (embed): Embedding(8, 128)
+  (encoder): EncoderCRNN(
+    (emb): Embedding(8, 128)
+    (conv1): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=(1,))
+    (bn1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (conv2): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=(1,))
+    (bn2): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (gru): GRU(128, 128, batch_first=True, bidirectional=True)
+  )
+  (decoder): AttentionalRNNDecoder(
+    (proj): Linear(in_features=256, out_features=128, bias=True)
+    (attn): ContentBasedAttention(
+      (mlp_enc): Linear(in_features=256, out_features=128, bias=True)
+      (mlp_dec): Linear(in_features=128, out_features=128, bias=True)
+      (mlp_attn): Linear(in_features=128, out_features=1, bias=False)
+      (mlp_out): Linear(in_features=256, out_features=128, bias=True)
+      (softmax): Softmax(dim=-1)
+    )
+    (drop): Dropout(p=0.0, inplace=False)
+    (rnn): GRUCell(
+      (rnn_cells): ModuleList(
+        (0): GRUCell(256, 128)
+      )
+      (dropout_layers): ModuleList()
+    )
+    (emb): Embedding(8, 128)
+  )
+  (lm_head): Linear(in_features=128, out_features=8, bias=True)
+)
+Num of param: 562,824
