@@ -50,10 +50,10 @@ The structure of this repository is as follows:
 ## Get started
 1. If the project folder doesn't have directory 
         
-        data/Microsoft_Nanoport
+        data/Microsoft_Nanopore
    Download the dataset from <a href='https://github.com/microsoft/clustered-nanopore-reads-dataset'>here</a>. After downloading, put all contents of the downloaed folder to 
         
-        data/Microsoft_Nanoport/raw
+        data/Microsoft_Nanopore/raw
 
 
 2. Create a conda environment for this project, by
@@ -78,7 +78,7 @@ The structure of this repository is as follows:
 
 ## Reference
 
-- Splitted dataset from <a href='https://github.com/microsoft/clustered-nanopore-reads-dataset'>Microsoft_Nanoport</a>
+- Splitted dataset from <a href='https://github.com/microsoft/clustered-nanopore-reads-dataset'>Microsoft_Nanopore</a>
 
 - The sequence-to-sequence network structure is adapted from *[2]	Bahdanau, Dzmitry, Kyung Hyun Cho, and Yoshua Bengio. "<a ref='https://arxiv.org/abs/1409.0473'>Neural machine translation by jointly learning to align and translate. </a>" 3rd International Conference on Learning Representations, ICLR 2015. 2015.*
 
