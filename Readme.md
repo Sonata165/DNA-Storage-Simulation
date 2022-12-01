@@ -74,7 +74,10 @@ The structure of this repository is as follows:
 
         conda env create -n [env_name] -f env.yaml
 
-3. Convert the raw data into structured format by 
+3. If the project folder doesn't have directory
+
+        data/Microsoft_Nanopore/train.json
+    Convert the raw data into structured format by 
         
         python format_data.py
 
