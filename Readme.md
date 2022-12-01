@@ -90,6 +90,9 @@ The structure of this repository is as follows:
         python train_s2s.py hparams/s2s_rnn.yaml
 
 
+## License
+MIT License, inherited from <a href='https://github.com/microsoft/clustered-nanopore-reads-dataset'>Microsoft_Nanopore</a>.
+
 ## Reference
 
 - Splitted dataset from <a href='https://github.com/microsoft/clustered-nanopore-reads-dataset'>Microsoft_Nanopore</a>
