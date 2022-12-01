@@ -16,12 +16,12 @@ Trace reconstruction result comparison of real data and generated data by seq2se
 Other numeric metric:
 
     Result on real data:
-        Average reconstruction error rate per position: 0.11808161778101653,
+        Average reconstruction error rate per position: 0.1181,
         Number of perfectly reconstructed strands: 332,
     Result on synthesized data:
-        Average reconstruction error rate per position: 0.12375660411732559,
+        Average reconstruction error rate per position: 0.1238,
         Number of perfectly reconstructed strands: 338,
-        Average of positional absolute error rate difference: 0.007970486427400255
+        Average of positional absolute error rate difference: 0.0080
 
 ## Structure
 
