@@ -12,6 +12,7 @@ In addition to the training and evaluation code, we also demonstrate some promis
 ## Result
 Trace reconstruction result comparison of real data and generated data by seq2seq model:
 ![Alt text](results/ms_nano/Seq2seqRNN/recon_compare.png?raw=true "Title")
+
 Other numeric metric:
 
     Result on real data:
