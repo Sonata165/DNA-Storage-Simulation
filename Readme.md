@@ -10,7 +10,17 @@ To test the quality of synthesized data, double-sided Bitwise Majority Alignment
 In addition to the training and evaluation code, we also demonstrate some promising results: using the generated noisy strands from our seq2seq network, the given trace reconstruction algorithm behaves very similarly as when giving the real noisy data as input.
 
 ## Result
+Trace reconstruction result comparison of real data and generated data by seq2seq model:
 ![Alt text](results/ms_nano/Seq2seqRNN/recon_compare.png?raw=true "Title")
+Other numeric metric:
+
+    Result on real data:
+        Average reconstruction error rate per position: 0.11808161778101653,
+        Number of perfectly reconstructed strands: 332,
+    Result on synthesized data:
+        Average reconstruction error rate per position: 0.12375660411732559,
+        Number of perfectly reconstructed strands: 338,
+        Average of positional absolute error rate difference: 0.007970486427400255
 
 ## Structure
 
