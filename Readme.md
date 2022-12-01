@@ -9,6 +9,9 @@ To test the quality of synthesized data, double-sided Bitwise Majority Alignment
 
 In addition to the training and evaluation code, we also demonstrate some promising results: using the generated noisy strands from our seq2seq network, the given trace reconstruction algorithm behaves very similarly as when giving the real noisy data as input.
 
+## Result
+![Alt text](results/ms_nano/Seq2seqRNN/recon_compare.png?raw=true "Title")
+
 ## Structure
 
 The structure of this repository is as follows:
