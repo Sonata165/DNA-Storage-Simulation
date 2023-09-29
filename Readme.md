@@ -1,4 +1,15 @@
 # DNA Storage Synthesis
+
+- [DNA Storage Synthesis](#dna-storage-synthesis)
+    - [Overview](#overview)
+    - [Result](#result)
+    - [Structure](#structure)
+    - [Get started](#get-started)
+    - [Add noise to your own data](#add-noise-to-your-own-data)
+    - [License](#license)
+    - [Reference](#reference)
+
+
 ## Overview
 This project aims to build data synthesize systems to contaminate the clean DNA strands, to simulate the changes of DNA brought by the write and read operation of DNA-based storage systems. Specifically, three different methods are demonstrated:
 - a naïve rule-based method 
@@ -91,6 +102,9 @@ The structure of this repository is as follows:
 
         # Train, inference with, and evaluate a sequence-to-sequence network
         python train_s2s.py hparams/s2s_rnn.yaml
+
+## Add noise to your own data
+
 
 
 ## License
