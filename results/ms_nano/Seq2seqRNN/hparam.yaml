@@ -28,6 +28,7 @@ REDUCE_FACTOR: 0.9
 EARLY_STOP: true
 PATIENCE: 5
 generation_coverage: 5
+generate_bs: 128
 recon_ref_path: ./results/ms_nano/recon_ref/recon_result.json
 device: cuda
 gpu: '0'

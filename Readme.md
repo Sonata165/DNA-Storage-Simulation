@@ -81,9 +81,14 @@ The structure of this repository is as follows:
         data/Microsoft_Nanopore/raw
 
 
-2. Create a conda environment for this project, by
+2. Create a conda environment for this project
 
+        ## Linux with CUDA
         conda env create -n [env_name] -f env.yaml
+
+        ## OSX
+        pip install -r requirements.txt
+        pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1
 
 3. If the project folder doesn't have directory
 
@@ -104,7 +109,15 @@ The structure of this repository is as follows:
         python train_s2s.py hparams/s2s_rnn.yaml
 
 ## Add noise to your own data
+Please follow the two examples in infer.py file.
+        
+        # In infer.py file
 
+        # Txt input, txt output
+        eg_txt()
+        
+        # Json input, json output
+        eg_json()
 
 
 ## License

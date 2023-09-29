@@ -145,8 +145,6 @@ class Seq2seqRNN(nn.Module):
     def __init__(self, vocab_size, hidden_size, enc_rnn_layer, dec_rnn_layer, bi_enc):
         vocab_size, hidden_size, enc_rnn_layer, dec_rnn_layer = int(
             vocab_size), int(hidden_size), int(enc_rnn_layer), int(dec_rnn_layer)
-        # print(type(vocab_size))
-        # print(bi_enc, type(bi_enc))
         super().__init__()
         self.embed = nn.Embedding(vocab_size, hidden_size)
         self.encoder = EncoderRNN(
@@ -165,7 +163,6 @@ class Seq2seqRNN(nn.Module):
 
     def forward(self, enc_inp, dec_inp):
         enc_out, _ = self.encoder(enc_inp)
-        # print(dec_inp.shape, enc_out.shape)
         out, attn = self.decoder(dec_inp, enc_out)
         out = self.lm_head(out)
         return out, attn

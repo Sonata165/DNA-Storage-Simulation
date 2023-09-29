@@ -207,20 +207,12 @@ def infer(hparam):
     with torch.no_grad():
         data = read_json(hparam['test_path'])
         data = list(data.items())
-        # print(data[:3])
-        # for id in tqdm(data):
         for i in tqdm(range(0, len(data), bs)):
             i_end = i + bs
             clean = [j[1]['ref'] for j in data[i:i_end]]
-            # print(clean)
-            # print()
             enc_inp = dataset_test.tokenizer.batch_tokenize(clean)
-            # enc_inp = torch.tensor(enc_inp).unsqueeze(0).to(hparam['device'])
             enc_inp = torch.tensor(enc_inp).to(hparam['device']) # [B, L]
-            # print(enc_inp.shape) # [34]
             enc_out, _ = net.encoder(enc_inp)       # [B, L_in, D]
-            # print(enc_inp.shape, enc_out.shape)
-            # exit(200)
 
             syn = []
             for j in range(hparam['generation_coverage']):
@@ -240,20 +232,15 @@ def infer(hparam):
                         input_emb[:, k], hs, c, enc_out, enc_len
                     )
                     logits = net.lm_head(outputs) # [B, V]
-                    # print(logits.shape)
-                    outputs_lst.append(outputs) 
+                    outputs_lst.append(outputs)
                     attn_lst.append(w)
                     
                     # greedy sampling
                     ch = logits_to_ch(logits).unsqueeze(1).to(hparam['device']) # [B,1]
 
                     input_ids = torch.cat((input_ids, ch), dim=1)
-                # input_ids: [B, L_out]
-                # out = [dataset_test.tokenizer.de_tokenize(i) for i in input_ids.tolist()]
                 out = input_ids
-                # print_json(out)
                 syn.append(out)
-                # exit(20)
             syn = torch.stack(syn) # syn: [coverage, batch, len]
             syn = syn.permute(1, 0, 2) # [batch, coverage, len]
             
@@ -265,8 +252,6 @@ def infer(hparam):
                     'syn':noisy,
                 }
             print(len(ret))
-            # print_json(ret)
-            # exit(100)
     save_json(ret, jpath(hparam['output_dir'], 'synthesized.json'))
 
     
@@ -301,6 +286,7 @@ def pack_batch(batch, hparam):
 
 def logits_to_ch(logits):
     '''
+    Do the sampling for logits, generate character sequence
     logits: [bs, vocab_size]
     '''
     ret = torch.zeros(size=(logits.shape[0],), dtype=torch.long) # [bs*2, len/2]

@@ -11,7 +11,8 @@ from utils import save_json, jpath, read_json
 
 
 def main():
-    procedures()
+    format_our_data()
+    pass
 
 
 def procedures():
@@ -29,6 +30,26 @@ def procedures():
 
     # fastq_parser('./data/Microsoft_Illumina/raw/id20.fastq')
     # format_ms_illumina()
+
+
+def format_our_data():
+    data_dir = './data/Ours/'
+    data_fp = jpath(data_dir, 'EncodedStrands.txt')
+    with open(data_fp) as f:
+        data = f.readlines()
+
+    # Write in json
+    res = {}
+    id = 0
+    for line in data:
+        line = line.strip()
+        if len(line) == 0:
+            continue
+        res[id] = {'ref': line}
+        id += 1
+    out_fp = jpath(data_dir, 'clean.json')
+    save_json(res, out_fp)
+
 
 def validate_split_ms_nano(data_root):
     '''
@@ -90,7 +111,7 @@ def split_dataset(data_path):
                 train_data.append(entry)
         else:
             train_data.append(entry)
-    
+
     train_data = dict(train_data)
     valid_data = dict(valid_data)
     test_data = dict(test_data)
@@ -144,12 +165,12 @@ def format_ms_illumina():
     save_json(strand_len, 'strand_length_dist1.json', sort=True)
 
 
-
 def fastq_parser(fn):
     '''
     Code from https://www.biostars.org/p/317524/
     Parse fastq file to a 'NoisyStrands.txt' file for clustering
     '''
+
     def process(lines=None):
         ks = ['name', 'sequence', 'optional', 'quality']
         ret = {k: v for k, v in zip(ks, lines)}
@@ -166,7 +187,7 @@ def fastq_parser(fn):
 
     records = []
     lines = []
-    output_path = fn+'.txt'
+    output_path = fn + '.txt'
     with open(output_path, 'w') as f:
         for line in tqdm(data):
             lines.append(line.rstrip())
@@ -175,7 +196,7 @@ def fastq_parser(fn):
                 # sys.stderr.write("Record: %s\n" % (str(record)))
                 # records.append(record)
                 lines = []
-                f.write(record['sequence']+'\n')
+                f.write(record['sequence'] + '\n')
     # save_json(records, fn+'.json')
 
 
@@ -211,7 +232,7 @@ def format_ms_nano():
         raise Exception('Incorrect cluster num')
 
     for i in range(len(clusters)):
-        res[i+1] = {'ref': strands[i], 'syn': clusters[i]}
+        res[i + 1] = {'ref': strands[i], 'syn': clusters[i]}
     save_json(res, jpath(data_folder, 'full.json'))
 
 

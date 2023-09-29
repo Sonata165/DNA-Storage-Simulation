@@ -34,17 +34,20 @@ random.seed(10)
 np.random.seed(0)
 torch.manual_seed(10)
 
+
 def seed_worker(worker_id):
     worker_seed = torch.initial_seed() % 2 ** 32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
+
 g = torch.Generator()
 g.manual_seed(0)
 
+
 def train(hparam, ctn=False):
     model_name = hparam['model_name']
-    
+
     if hparam['use_tensorboard']:
         if not os.path.exists(hparam['output_dir']):
             os.mkdir(hparam['output_dir'])
@@ -96,7 +99,7 @@ def train(hparam, ctn=False):
     early_stopping = EarlyStopping(hparam['PATIENCE'], verbose=False, savefolder=hparam['output_dir'])
 
     param_num = check_model(net)
-    
+
     with open(jpath(hparam['output_dir'], 'net_params.txt'), 'w') as f:
         f.write('{}\n'.format(net))
         f.write('Num of param: {:,}'.format(param_num))
@@ -109,7 +112,7 @@ def train(hparam, ctn=False):
     for epoch in range(hparam['EPOCH']):
         net.train()
         running_loss = 0.0
-        
+
         if epoch > 0:
             pbar = tqdm(train_loader)
             for step, batch in enumerate(pbar):
@@ -124,7 +127,8 @@ def train(hparam, ctn=False):
                 optimizer.step()
 
                 running_loss += loss.item()
-                pbar.set_description('Epoch: {} | Step {} / {} | loss {:.4f}'.format(epoch, step + 1, len(train_loader), loss.item()))
+                pbar.set_description(
+                    'Epoch: {} | Step {} / {} | loss {:.4f}'.format(epoch, step + 1, len(train_loader), loss.item()))
 
             if epoch % hparam['REDUCE_EPOCH'] == 0 and epoch > 0:
                 for param_group in optimizer.param_groups:
@@ -162,7 +166,7 @@ def train(hparam, ctn=False):
                 out = out.permute(0, 2, 1)
                 loss = loss_func(out, batch_y.to(hparam['device']))
                 running_loss += loss.item()
-                
+
         avg_test_loss = running_loss / len(test_loader)
         print(' | Test Loss: {:.4f} '.format(avg_test_loss))
 
@@ -187,6 +191,7 @@ def train(hparam, ctn=False):
                     f.write('Early stop at epoch {}. Best model from epoch {}'.format(epoch, early_stopping.best_epoch))
                 break
 
+
 def infer(hparam):
     '''
     Generate noisy samples using the trained model.
@@ -196,14 +201,14 @@ def infer(hparam):
     net.load_state_dict(torch.load(model_path))
 
     dataset_test = MyDataset(hparam['test_path'], split='test')
-    test_loader = DataLoader(
-        dataset=dataset_test,
-        batch_size=hparam['batch_size'],
-        shuffle=False,
-        num_workers=hparam['num_workers'],
-        worker_init_fn=seed_worker,
-        generator=g,
-    )
+    # test_loader = DataLoader(
+    #     dataset=dataset_test,
+    #     batch_size=hparam['batch_size'],
+    #     shuffle=False,
+    #     num_workers=hparam['num_workers'],
+    #     worker_init_fn=seed_worker,
+    #     generator=g,
+    # )
     ret = {}
     net.eval()
     with torch.no_grad():
@@ -211,17 +216,16 @@ def infer(hparam):
         for id in tqdm(data):
             clean = data[id]['ref']
             t1, t2 = dataset_test.tokenize(clean)
-            input = torch.tensor([t1, t2], device = hparam['device'])
+            input = torch.tensor([t1, t2], device=hparam['device'])
             syn = []
             for i in range(hparam['generation_coverage']):
                 out = net(input)
                 seq = logits_to_seq(out)
                 syn.append(post_process(seq, hparam['batch_size'])[0])
-            ret[id] = {'ref': clean, 'syn':syn}
+            ret[id] = {'ref': clean, 'syn': syn}
             # print_json(ret)
     save_json(ret, jpath(hparam['output_dir'], 'synthesized.json'))
 
-    
 
 def evaluate(hparam):
     '''
@@ -239,11 +243,12 @@ def evaluate(hparam):
     )
     pass
 
+
 def pack_batch(batch, hparam):
-    b_clean1 = batch[:,0,:]
-    b_clean2 = batch[:,1,:]
-    b_noisy1 = batch[:,2,:]
-    b_noisy2 = batch[:,3,:]
+    b_clean1 = batch[:, 0, :]
+    b_clean2 = batch[:, 1, :]
+    b_noisy1 = batch[:, 2, :]
+    b_noisy2 = batch[:, 3, :]
     b_clean = torch.cat((b_clean1, b_clean2), dim=0)
     b_noisy = torch.cat((b_noisy1, b_noisy2), dim=0)
 
@@ -251,26 +256,21 @@ def pack_batch(batch, hparam):
     b_y = b_noisy.to(hparam['device'])
     return b_x, b_y
 
+
 def logits_to_seq(logits):
     '''
+    Apply sampling to output logits, generate the bp sequence
     logits: [bs*2, len/2, vocab_size]
     '''
-    ret = torch.zeros(size=(logits.shape[0], logits.shape[1]), dtype=torch.long) # [bs*2, len/2]
-    t = torch.softmax(logits, dim=2) # [bs*2, len/2, vocab_size]
+    ret = torch.zeros(size=(logits.shape[0], logits.shape[1]), dtype=torch.long)  # [bs*2, len/2]
+    t = torch.softmax(logits, dim=2)  # [bs*2, len/2, vocab_size]
     for i in range(ret.shape[0]):
         for j in range(ret.shape[1]):
             dist = t[i][j]
             ch = np.random.choice(np.arange(5), p=dist.cpu().numpy())
-            # print(dist.shape, ch)
             ret[i][j] = ch
-            # exit(20)
-    
-    # t = torch.softmax(logits, dim=2)
-    # print(t[:, -5:])
-    # ret = t.argmax(axis=2)
-    # print(ret.shape) # [bs*2, len/2]
-    # print(ret[:, -5:])
     return ret
+
 
 def post_process(out, bs):
     '''
@@ -304,11 +304,12 @@ def post_process(out, bs):
             if j != 0:
                 res.append(vocab_dict[j])
             else:
-                res.append(vocab_dict[random.choice([1,2,3,4])])
+                res.append(vocab_dict[random.choice([1, 2, 3, 4])])
         res = ''.join(res)
 
         ret.append(res)
     return ret
+
 
 def depad(seq):
     '''
@@ -319,12 +320,14 @@ def depad(seq):
         seq.pop(-1)
     return seq
 
+
 def compute_pred(out):
     pred_y = out.detach()
     pred_y[pred_y >= 0.5] = 1
     pred_y[pred_y < 0.5] = 0
     pred_y = pred_y.data.cpu().numpy()
     return pred_y
+
 
 def check_model(model):
     pytorch_total_params = sum(p.numel() for p in model.parameters())
@@ -339,6 +342,6 @@ if __name__ == '__main__':
     args = mlconfig.load(arg_path)
     hparam = args
     os.environ["CUDA_VISIBLE_DEVICES"] = hparam['gpu']
-    # train(hparam)
-    # infer(hparam)
+    train(hparam)
+    infer(hparam)
     evaluate(hparam)

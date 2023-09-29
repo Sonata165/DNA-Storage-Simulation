@@ -7,12 +7,16 @@ import os
 import json
 import torch
 import numpy as np
+import matplotlib.pyplot as plt
 from datetime import timedelta
+
 ls = os.listdir
 jpath = os.path.join
 
+
 def main():
     check_tokenizer()
+
 
 def check_tokenizer():
     seq = 'ATCNG'
@@ -30,9 +34,10 @@ def check_tokenizer():
     ]
     ids = tk.batch_tokenize(b)
     print(ids)
-    
+
     for id in ids:
         print(tk.de_tokenize(id))
+
 
 def read_json(path):
     with open(path, 'r', encoding='utf8') as f:
@@ -40,12 +45,15 @@ def read_json(path):
         data = json.loads(data)
     return data
 
+
 def save_json(data, path, sort=False):
     with open(path, 'w', encoding='utf8') as f:
         f.write(json.dumps(data, indent=4, sort_keys=sort, ensure_ascii=False))
 
+
 def print_json(data):
-    print(json.dumps(data,indent=4,ensure_ascii=False))
+    print(json.dumps(data, indent=4, ensure_ascii=False))
+
 
 def timecode_to_timedelta(timecode):
     '''
@@ -68,8 +76,48 @@ def sec_to_timedelta(time_in_sec):
     return ret
 
 
+def update_dic(d, v):
+    if v in d:
+        d[v] += 1
+    else:
+        d[v] = 1
+
+
+def sort_dic(d):
+    t = list(d.items())
+    t.sort()
+    ret = dict(t)
+    return ret
+
+
+def plot_dic(d):
+    items = list(d.items())
+    x = [i[0] for i in items]
+    y = [i[1] for i in items]
+    plt.plot(x, y)
+    plt.show()
+
+
+def plot_dic_hist(d):
+    # Extracting values and their corresponding frequencies
+    values = list(d.keys())
+    frequencies = list(d.values())
+
+    # Plotting the histogram
+    plt.figure(figsize=(10, 6))
+    plt.bar(values, frequencies, color='blue', alpha=0.7)
+
+    # Adding title and labels
+    plt.title('Histogram from Dictionary')
+    plt.xlabel('Values')
+    plt.ylabel('Frequency')
+
+    # Show the plot
+    plt.show()
+
+
 class S2sTokenizer:
-    def __init__(self): 
+    def __init__(self):
         self.pad_token = 0
         self.bos_token = 1
         self.eos_token = 2
@@ -95,7 +143,7 @@ class S2sTokenizer:
         '''
         Convert a string of characters to a list of ids
         '''
-        ids = [self.dic[i] if i in self.dic else self.unk_token for i in seq] 
+        ids = [self.dic[i] if i in self.dic else self.unk_token for i in seq]
         ids.insert(0, self.bos_token)
         ids.append(self.eos_token)
         return ids
@@ -104,7 +152,7 @@ class S2sTokenizer:
         '''
         Pad a tokenized sequence to target length
         '''
-        ret = l + [0 for i in range(max_len-len(l))]
+        ret = l + [0 for i in range(max_len - len(l))]
         return ret
 
     def batch_tokenize(self, batch):
@@ -112,14 +160,23 @@ class S2sTokenizer:
         ret = [self.pad(self.tokenize(seq), max_len) for seq in batch]
         return ret
 
-    def de_tokenize(self, l):
+    def de_tokenize(self, l, min_len=None):
         '''
         Convert a list of ids back to a string
         '''
+        # Delete bos token
         while len(l) > 0 and l[0] == self.bos_token:
             l = l[1:]
-        while len(l) > 0 and l[-1] in [self.eos_token, self.pad_token]:
-            l = l[:-1]
+        # Find the first eos or pad token
+        eos_index = -1 if min_len == None else min_len
+        for i, v in enumerate(l):
+            if min_len != None and i < min_len:
+                continue
+            if v in [self.eos_token, self.pad_token]:
+                eos_index = i
+                break
+        l = l[:eos_index]
+
         t = [self.dic_rev[i] for i in l]
         ret = ''.join(t)
         return ret
